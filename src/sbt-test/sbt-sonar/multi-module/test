@@ -1,4 +1,4 @@
-# Test against sbt 1.0 & scala 2.12.
+# Test against sbt 1.12 & scala 2.12.
 # Runs scoverage, scapegoat & sonarScan.
 
 > clean

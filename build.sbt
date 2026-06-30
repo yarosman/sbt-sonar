@@ -1,13 +1,15 @@
 import java.time.Year
 
-import de.heikoseeberger.sbtheader.License
+import sbtheader.License
 
 enablePlugins(AutomateHeaderPlugin)
 enablePlugins(SbtPlugin)
 
+addSbtPlugin("com.github.sbt" % "sbt2-compat" % "0.1.0")
+
 name := "sbt-sonar"
-organization := "com.sonar-scala"
-homepage := Some(url("https://github.com/sonar-scala/sbt-sonar"))
+organization := "io.github.yarosman"
+homepage := Some(url("https://github.com/yarosman/sbt-sonar"))
 
 // Licence
 organizationName := "All sbt-sonar contributors"
@@ -19,24 +21,31 @@ headerLicense := Some(
     organizationName.value
   )
 )
-excludeFilter.in(headerResources) := "*.scala"
+headerResources / excludeFilter := "*.scala"
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/sonar-scala/sbt-sonar"),
-    "scm:git:https://github.com/sonar-scala/sbt-sonar.git",
-    Some("scm:git:git@github.com:sonar-scala/sbt-sonar.git")
+    url("https://github.com/yarosman/sbt-sonar"),
+    "scm:git:https://github.com/yarosman/sbt-sonar.git",
+    Some("scm:git:git@github.com:yarosman/sbt-sonar.git")
   )
 )
 developers := List(
   Developer(
-    "mwz",
-    "Michael Wizner",
-    "@mwz",
-    url("https://github.com/mwz")
+    "yarosman",
+    "Yaroslav Derman",
+    "@yarosman",
+    url("https://github.com/yarosman")
   )
 )
 
-crossSbtVersions := Seq("0.13.18", "1.5.0")
+scalaVersion := "2.12.21"
+crossScalaVersions := Seq("2.12.21", "3.8.4")
+pluginCrossBuild / sbtVersion := {
+  scalaBinaryVersion.value match {
+    case "2.12" => "1.12.13"
+    case _      => "2.0.0"
+  }
+}
 sbtPlugin := true
 scalacOptions ++= Seq(
   "-encoding",
@@ -44,17 +53,25 @@ scalacOptions ++= Seq(
   "-unchecked",
   "-deprecation"
 )
-libraryDependencies ++= List(
-  "org.sonarsource.scanner.api" % "sonar-scanner-api" % "2.16.1.361" % Compile,
-  "org.scalatest"              %% "scalatest"         % "3.2.9"      % Test,
-  "org.scalatestplus"          %% "mockito-1-10"      % "3.1.0.0"    % Test,
-  "org.mockito"                 % "mockito-core"      % "3.10.0"      % Test
-)
-scalafmtOnCompile in ThisBuild :=
+libraryDependencies ++= {
+  val collectionCompat =
+    if (scalaBinaryVersion.value == "2.12") {
+      Seq("org.scala-lang.modules" %% "scala-collection-compat" % "2.14.0")
+    } else {
+      Nil
+    }
+
+  List(
+    "org.sonarsource.scanner.api" % "sonar-scanner-api"       % "2.16.3.1081" % Compile,
+    "org.scalatest"              %% "scalatest"               % "3.2.10"      % Test,
+    "org.mockito"                %% "mockito-scala-scalatest" % "2.2.1"       % Test
+  ) ++ collectionCompat
+}
+ThisBuild / scalafmtOnCompile :=
   sys.env
     .get("CI")
     .forall(_.toLowerCase == "false")
-cancelable in Global := true
+Global / cancelable := true
 
 // Scripted
 scriptedLaunchOpts := {
@@ -65,6 +82,3 @@ scriptedLaunchOpts := {
   )
 }
 scriptedBufferLog := false
-
-// Sonatype
-sonatypeCredentialHost := "s01.oss.sonatype.org"

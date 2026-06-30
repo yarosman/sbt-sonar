@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2021 All sbt-sonar contributors
+ * Copyright 2016-2026 All sbt-sonar contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,12 @@ package sbtsonar
 import java.io.File
 import java.nio.file.Paths
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.util.Properties
 
 import SbtCompat.Logger
-import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.scalatest.MockitoSugar
 import org.sonarsource.scanner.api.EmbeddedScanner
 import sbt.IO
 import org.scalatest.flatspec.AnyFlatSpec
@@ -149,7 +148,7 @@ class SonarPluginTest extends AnyFlatSpec with Matchers with MockitoSugar with W
   "useEmbeddedScanner" should "start the analysis using the embedded scanner" in {
     implicit val log = Logger.Null
     val embeddedScanner = mock[EmbeddedScanner]
-    when(embeddedScanner.addGlobalProperties(any())).thenReturn(embeddedScanner)
+    when(embeddedScanner.addGlobalProperties(any[java.util.Map[String, String]])).thenReturn(embeddedScanner)
 
     SonarPlugin.useEmbeddedScanner(
       useExternalConfig = false,
@@ -175,7 +174,7 @@ class SonarPluginTest extends AnyFlatSpec with Matchers with MockitoSugar with W
 
     implicit val log = Logger.Null
     val embeddedScanner = mock[EmbeddedScanner]
-    when(embeddedScanner.addGlobalProperties(any())).thenReturn(embeddedScanner)
+    when(embeddedScanner.addGlobalProperties(any[java.util.Map[String, String]])).thenReturn(embeddedScanner)
 
     SonarPlugin.useEmbeddedScanner(
       useExternalConfig = true,

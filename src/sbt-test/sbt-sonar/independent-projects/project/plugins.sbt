@@ -4,6 +4,6 @@ val pluginVersion = sys.props.getOrElse(
     """|The system property 'plugin.version' is not defined.
        |Specify this property using the scriptedLaunchOpts -D.""".stripMargin))
 
-addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.7")
-addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
-addSbtPlugin("com.sonar-scala" % "sbt-sonar" % pluginVersion)
+addSbtPlugin("org.johnnei.scapegoat" %% "sbt-scapegoat" % "1.3.12")
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "2.4.4")
+addSbtPlugin("io.github.yarosman" % "sbt-sonar" % pluginVersion)

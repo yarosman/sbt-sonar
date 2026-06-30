@@ -1,0 +1,11 @@
+# Test against sbt 2.0 & scala 3.
+# Runs scoverage and scapegoat, then verifies external-config wiring.
+
+> clean
+> coverage
+> test
+> coverageReport
+> coverageOff
+> scapegoat
+> show sonarUseExternalConfig
+> inspect sonarScan

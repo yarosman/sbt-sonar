@@ -1,15 +1,12 @@
-<h1 align="left"> <img src="https://sonar-scala.com/img/logo.svg" height="80px"> sbt-sonar</h1>
+<h1 align="left">sbt-sonar</h1>
 
-![](https://img.shields.io/github/workflow/status/sonar-scala/sbt-sonar/Release/master)
-[![maven-badge]][maven] [![gitter-badge]][gitter]
+[![release-badge]][release] [![maven-badge]][maven]
 
-[maven]: https://search.maven.org/artifact/com.sonar-scala/sbt-sonar
-[maven-badge]:
-  https://maven-badges.herokuapp.com/maven-central/com.sonar-scala/sbt-sonar/badge.svg
-[bintray]: https://bintray.com/mwz/sbt-plugin-releases/sbt-sonar/_latestVersion
-[gitter]: https://gitter.im/sonar-scala/sonar-scala
-[gitter-badge]:
-  https://img.shields.io/gitter/room/sonar-scala/sonar-scala.svg?colorB=46BC99&label=Chat
+[release]: https://github.com/yarosman/sbt-sonar/actions/workflows/release.yml
+[release-badge]:
+  https://img.shields.io/github/actions/workflow/status/yarosman/sbt-sonar/release.yml?branch=master
+[maven]: https://search.maven.org/artifact/io.github.yarosman/sbt-sonar
+[maven-badge]: https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar.svg
 
 sbt-sonar is an sbt plugin, which provides an easy way to integrate Scala
 projects with [SonarQube](https://www.sonarqube.org) - a tool for continuous
@@ -23,12 +20,6 @@ sonar-scanner executable installed in your environment.
 This plugin is particularly useful for CI when used together with e.g.
 [sbt-release](https://www.github.com/sbt/sbt-release) plugin for an automated
 release process in your project, but it can be also used on its own.
-
-## Documentation
-
-See the project website
-[sonar-scala.com](https://sonar-scala.com/docs/setup/sbt-sonar) for
-documentation.
 
 ## License
 

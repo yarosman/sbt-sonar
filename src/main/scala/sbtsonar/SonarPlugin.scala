@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2021 All sbt-sonar contributors
+ * Copyright 2016-2026 All sbt-sonar contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,11 @@ package sbtsonar
 import java.nio.file.Paths
 import java.util.{Properties => JavaProperties}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.sys.process.Process
 import scala.util.Properties
 
+import sbtcompat.PluginCompat._
 import org.sonarsource.scanner.api.{EmbeddedScanner, LogOutput}
 import sbt.Keys._
 import sbt._
@@ -70,25 +71,28 @@ object SonarPlugin extends AutoPlugin {
           "sonar.projectBaseDir" -> baseDirectory.value.toString
         ) ++
         // Base sources directory.
-        sourcesDir(baseDirectory.value, (scalaSource in Compile).value) ++
+        sourcesDir(baseDirectory.value, (Compile / scalaSource).value) ++
 
         // Base tests directory.
-        testsDir(baseDirectory.value, (scalaSource in Test).value) ++
+        testsDir(baseDirectory.value, (Test / scalaSource).value) ++
 
         // Scoverage & Scapegoat report directories.
         reports(
           baseDirectory.value,
-          (crossTarget in Compile).value,
+          (Compile / crossTarget).value,
           sonarExpectSonarQubeCommunityPlugin.value
         )
       ).toMap,
-      sonarScan := {
+      sonarScan := Def.uncached {
         implicit val log: Logger = streams.value.log
 
         // Allow to set sonar properties via system properties
         // [https://docs.sonarqube.org/display/SONAR/Analysis+Parameters]
         val systemProperties: Map[String, String] =
-          sys.props.filterKeys(_.startsWith("sonar.")).toMap
+          sys.props.collect {
+            case (key, value) if key.startsWith("sonar.") =>
+              key -> value
+          }.toMap
 
         if (sonarUseSonarScannerCli.value)
           useStandaloneScanner(
@@ -225,7 +229,7 @@ object SonarPlugin extends AutoPlugin {
   }
 
   private[sbtsonar] def propertiesFromFile(file: File): Map[String, String] = {
-    SbtCompat.Using.fileInputStream(file) { stream =>
+    SbtCompat.withFileInputStream(file) { stream =>
       val props = new JavaProperties
       props.load(stream)
       props.asScala.toMap
@@ -241,13 +245,14 @@ object SonarPlugin extends AutoPlugin {
     embeddedScanner: EmbeddedScanner
   )(implicit log: Logger): Unit = {
     val properties: Map[String, String] =
-      if (useExternalConfig)
+      if (useExternalConfig) {
         // Overwrite project version.
         (propertiesFromFile(propertiesFile) + (SonarProjectVersionKey -> version)) ++ systemProperties
-      else (sonarProperties + (SonarProjectVersionKey -> version)) ++ systemProperties
+      } else {
+        (sonarProperties + (SonarProjectVersionKey -> version)) ++ systemProperties
+      }
 
-    val configuredScanner =
-      embeddedScanner.addGlobalProperties(properties.asJava)
+    val configuredScanner = embeddedScanner.addGlobalProperties(properties.asJava)
 
     configuredScanner.start()
     log.info("SonarQube server version: " + configuredScanner.serverVersion)

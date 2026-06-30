@@ -1,0 +1,11 @@
+# Test against sbt 2.0 & scala 3.
+# Runs scoverage and scapegoat, then verifies sonar task/property wiring.
+
+> clean
+> coverage
+> test
+> coverageReport
+> coverageOff
+> scapegoat
+> show sonarProperties
+> inspect sonarScan

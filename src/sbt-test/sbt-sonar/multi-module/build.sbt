@@ -3,8 +3,10 @@ import sbtsonar.SonarPlugin.autoImport.sonarScan
 
 lazy val baseSettings = Seq(
   version := "0.1",
-  scalaVersion := "2.12.4",
-  scapegoatVersion in ThisBuild := "1.3.3",
+  scalaVersion := "2.12.20",
+  ThisBuild / scapegoatVersion := "3.2.0",
+  Scapegoat / scalacOptions := (Scapegoat / scalacOptions).value
+    .filterNot(_.startsWith("-P:scapegoat:minimalLevel:")),
   libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
 lazy val sonarSettings = Seq(
@@ -29,4 +31,4 @@ lazy val multiModule = (project in file("."))
   .settings(name := "multi-module")
   .settings(baseSettings)
   .settings(sonarSettings)
-  .settings(aggregate in sonarScan := false)
+  .settings(sonarScan / aggregate := false)
