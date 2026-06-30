@@ -41,9 +41,6 @@ object SonarPlugin extends AutoPlugin {
     val sonarUseSonarScannerCli: SettingKey[Boolean] = settingKey(
       "Whether to use a standalone sonar-scanner CLI instead of the embedded sonar-scanner API."
     )
-    val sonarExpectSonarQubeCommunityPlugin: SettingKey[Boolean] = settingKey(
-      "Whether to expect the target SonarQube server to run SonarScala (vendor plugin) or sonar-scala (community plugin)"
-    )
     val sonarProperties: SettingKey[Map[String, String]] = settingKey(
       "SonarScanner configuration properties."
     )
@@ -60,8 +57,6 @@ object SonarPlugin extends AutoPlugin {
     Seq(
       sonarUseExternalConfig := false,
       sonarUseSonarScannerCli := false,
-      // true for backwards compatibility
-      sonarExpectSonarQubeCommunityPlugin := true,
       sonarProperties := (
         Seq(
           "sonar.projectName" -> name.value,
@@ -79,8 +74,7 @@ object SonarPlugin extends AutoPlugin {
         // Scoverage & Scapegoat report directories.
         reports(
           baseDirectory.value,
-          (Compile / crossTarget).value,
-          sonarExpectSonarQubeCommunityPlugin.value
+          (Compile / crossTarget).value
         )
       ).toMap,
       sonarScan := Def.uncached {
@@ -132,20 +126,13 @@ object SonarPlugin extends AutoPlugin {
 
   private[sbtsonar] def reports(
     baseDir: File,
-    crossTarget: File,
-    expectSonarQubeCommunityPlugin: Boolean
+    crossTarget: File
   ): Seq[(String, String)] = {
-    val (scoverageReportKey, scapegoatReportKey) = {
-      if (expectSonarQubeCommunityPlugin)
-        ("sonar.scala.scoverage.reportPath", "sonar.scala.scapegoat.reportPath")
-      else
-        ("sonar.scala.coverage.reportPaths", "sonar.scala.scapegoat.reportPaths")
-    }
     IO.relativizeFile(baseDir, crossTarget)
       .map { dir =>
         Seq(
-          scoverageReportKey -> new File(dir, ScoverageReport).toString,
-          scapegoatReportKey -> new File(dir, ScapegoatReport).toString
+          "sonar.scala.coverage.reportPaths" -> new File(dir, ScoverageReport).toString,
+          "sonar.scala.scapegoat.reportPaths" -> new File(dir, ScapegoatReport).toString
         )
       }
       .toSeq

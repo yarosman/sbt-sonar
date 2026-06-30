@@ -124,23 +124,7 @@ sonarProperties := Map(
 
 ### Coverage and Scapegoat report properties
 
-By default, `sonarExpectSonarQubeCommunityPlugin := true`, which keeps the
-historic community Sonar Scala property names:
-
-```scala
-sonar.scala.scoverage.reportPath
-sonar.scala.scapegoat.reportPath
-```
-
-If your SonarQube server expects the vendor SonarScala property names, set:
-
-```scala
-import sbtsonar.SonarPlugin.autoImport.sonarExpectSonarQubeCommunityPlugin
-
-sonarExpectSonarQubeCommunityPlugin := false
-```
-
-Then sbt-sonar generates:
+For the official SonarScala plugin, sbt-sonar generates:
 
 ```scala
 sonar.scala.coverage.reportPaths
