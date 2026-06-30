@@ -1,12 +1,16 @@
 <h1 align="left">sbt-sonar</h1>
 
-[![release-badge]][release] [![maven-badge]][maven]
+[![release-badge]][release] [![maven-sbt1-badge]][maven-sbt1] [![maven-sbt2-badge]][maven-sbt2]
 
 [release]: https://github.com/yarosman/sbt-sonar/actions/workflows/release.yml
 [release-badge]:
   https://img.shields.io/github/actions/workflow/status/yarosman/sbt-sonar/release.yml?branch=master
-[maven]: https://search.maven.org/artifact/io.github.yarosman/sbt-sonar
-[maven-badge]: https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar.svg
+[maven-sbt1]: https://central.sonatype.com/search?q=io.github.yarosman
+[maven-sbt1-badge]:
+  https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar_2.12_1.0?label=sbt%201
+[maven-sbt2]: https://central.sonatype.com/search?q=io.github.yarosman
+[maven-sbt2-badge]:
+  https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar_sbt2_3?label=sbt%202
 
 sbt-sonar is an sbt plugin, which provides an easy way to integrate Scala
 projects with [SonarQube](https://www.sonarqube.org) - a tool for continuous
