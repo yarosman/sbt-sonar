@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      JAVA_OPTS: -Xms800M -Xmx2G -Xss2M -XX:ReservedCodeCacheSize=128M -Dfile.encoding=UTF-8
+      JVM_OPTS: -Xms800M -Xmx2G -Xss2M -XX:ReservedCodeCacheSize=128M -Dfile.encoding=UTF-8
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: sbt
+
+      - uses: sbt/setup-sbt@v1
+
+      - run: sbt -v '+test' '+publishLocal'
