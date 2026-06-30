@@ -5,10 +5,10 @@
 [release]: https://github.com/yarosman/sbt-sonar/actions/workflows/release.yml
 [release-badge]:
   https://img.shields.io/github/actions/workflow/status/yarosman/sbt-sonar/release.yml?branch=master
-[maven-sbt1]: https://central.sonatype.com/search?q=io.github.yarosman
+[maven-sbt1]: https://central.sonatype.com/artifact/io.github.yarosman/sbt-sonar_2.12_1.0/3.0.0
 [maven-sbt1-badge]:
   https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar_2.12_1.0?label=sbt%201
-[maven-sbt2]: https://central.sonatype.com/search?q=io.github.yarosman
+[maven-sbt2]: https://central.sonatype.com/artifact/io.github.yarosman/sbt-sonar_sbt2_3/3.0.0
 [maven-sbt2-badge]:
   https://img.shields.io/maven-central/v/io.github.yarosman/sbt-sonar_sbt2_3?label=sbt%202
 
