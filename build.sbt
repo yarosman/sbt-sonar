@@ -39,11 +39,11 @@ developers := List(
 )
 
 scalaVersion := "2.12.21"
-crossScalaVersions := Seq("2.12.21", "3.8.4")
+crossScalaVersions := Seq("2.12.21", "3.9.0")
 pluginCrossBuild / sbtVersion := {
   scalaBinaryVersion.value match {
     case "2.12" => "1.12.13"
-    case _      => "2.0.0"
+    case _      => "2.1.0"
   }
 }
 sbtPlugin := true
@@ -82,3 +82,7 @@ scriptedLaunchOpts := {
   )
 }
 scriptedBufferLog := false
+
+scalacOptions ++= {
+  if (scalaBinaryVersion.value == "2.12") Seq("-Xsource:3", "-release:8") else Nil
+}
